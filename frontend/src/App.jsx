@@ -7,7 +7,8 @@ import LoadingState from './components/LoadingState'
 import EmptyState from './components/EmptyState'
 import ErrorState from './components/ErrorState'
 import { useDebounce } from './hooks/useDebounce'
-import { getSummary, getRegistrations } from './api/sample-data'
+// Connected to the live C# REST API
+import { getSummary, getRegistrations, BASE_URL } from './api/registrationsApi'
 
 function App() {
   const [summary, setSummary] = useState(null)
@@ -31,7 +32,7 @@ function App() {
   // Debounced search term (~400ms)
   const debouncedSearch = useDebounce(searchTerm, 400)
 
-  // Fetch KPI Summary
+  // Fetch KPI Summary from GET /api/registrations/summary
   const fetchKpi = useCallback(async () => {
     try {
       setLoadingSummary(true)
@@ -39,12 +40,13 @@ function App() {
       setSummary(data)
     } catch (err) {
       console.error('Failed to load KPI summary:', err)
+      setErrorMessage(err.message || 'Cannot reach the C# API summary endpoint.')
     } finally {
       setLoadingSummary(false)
     }
   }, [])
 
-  // Fetch Registrations
+  // Fetch Registrations from GET /api/registrations?participantName=&type=&status=&page=&pageSize=
   const fetchRegs = useCallback(async () => {
     try {
       setLoadingRegistrations(true)
@@ -56,12 +58,12 @@ function App() {
         page,
         pageSize
       })
-      setRegistrations(res.items)
-      setTotalCount(res.totalCount)
-      setTotalPages(res.totalPages)
+      setRegistrations(res.items || [])
+      setTotalCount(res.totalCount || 0)
+      setTotalPages(res.totalPages || 1)
     } catch (err) {
       console.error('Failed to load registrations:', err)
-      setErrorMessage('Cannot reach the API. Please make sure the service is accessible.')
+      setErrorMessage(err.message || 'Cannot reach the API. Please make sure the C# backend is running.')
     } finally {
       setLoadingRegistrations(false)
     }
@@ -118,9 +120,15 @@ function App() {
     <div className="min-h-screen p-4 sm:p-8 max-w-7xl mx-auto space-y-6">
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b-2 border-[#1C1C1E]">
         <div>
-          <span className="inline-block font-space text-xs font-bold px-3 py-1 bg-[#FFF3B0] border border-[#1C1C1E] rounded-full retro-shadow-sm mb-2 -rotate-1">
-            AutoVista Events • Sorsogon City Coliseum
-          </span>
+          <div className="flex flex-wrap items-center gap-2 mb-2">
+            <span className="inline-block font-space text-xs font-bold px-3 py-1 bg-[#FFF3B0] border border-[#1C1C1E] rounded-full retro-shadow-sm -rotate-1">
+              AutoVista Events • Sorsogon City Coliseum
+            </span>
+            <span className="inline-flex items-center gap-1.5 font-space text-[11px] font-bold px-2.5 py-0.5 bg-[#DCFCE7] text-[#166534] border border-[#1C1C1E] rounded-full retro-shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-[#16A34A] animate-pulse" />
+              API Connected: {BASE_URL}
+            </span>
+          </div>
           <h1 className="text-3xl sm:text-4xl font-archivo tracking-tight text-[#1C1C1E]">
             Car Show 2027 Dashboard
           </h1>
@@ -145,12 +153,12 @@ function App() {
         />
       </section>
 
-      {/* Main Content Area: Loading, Error, Empty, or Table */}
+      {/* Main Content Area */}
       <section className="space-y-4">
         {errorMessage ? (
           <ErrorState message={errorMessage} onRetry={handleRetry} />
         ) : loadingRegistrations ? (
-          <LoadingState message="Loading registrations..." />
+          <LoadingState message="Loading registrations from C# API..." />
         ) : registrations.length === 0 ? (
           <EmptyState onClearFilters={handleClearFilters} />
         ) : (
