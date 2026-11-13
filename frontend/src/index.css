@@ -1,7 +1,34 @@
 @import "tailwindcss";
 
+/* ==========================================================================
+   1. FONT REGISTRATION (Belcons & Inter)
+   ========================================================================== */
+
+@font-face {
+  font-family: "Belcons";
+  src: url("/fonts/Belcons.woff") format("woff");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2JL7SUc.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ==========================================================================
+   2. TYPOGRAPHY SYSTEM & ROOT TOKENS
+   ========================================================================== */
+
 @layer base {
   :root {
+    --font-display: "Belcons", sans-serif;
+    --font-body: "Inter", sans-serif;
+
     --bg-aqua: #C7E7E3;
     --bg-cream: #FAF6EE;
     --bg-cream-light: #FFFDF9;
@@ -17,31 +44,39 @@
   body {
     background-color: var(--bg-aqua);
     color: var(--text-charcoal);
-    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: var(--font-body);
     min-height: 100vh;
     background-image: 
       linear-gradient(to right, rgba(28, 28, 30, 0.045) 1px, transparent 1px),
       linear-gradient(to bottom, rgba(28, 28, 30, 0.045) 1px, transparent 1px);
     background-size: 24px 24px;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Headings use Belcons */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+
+  /* Form controls, buttons, tables, inputs inherit Inter */
+  button, input, select, textarea, table, th, td {
+    font-family: var(--font-body);
   }
 }
 
-/* Custom font utilities matching reference image */
-.font-archivo {
-  font-family: 'Archivo Black', sans-serif;
-}
-
-.font-space {
-  font-family: 'Space Grotesk', sans-serif;
-}
-
-.font-dm {
-  font-family: 'DM Sans', sans-serif;
-}
-
+/* Typography Utility Classes: Headings (Belcons) and General Interface (Inter) */
+.font-display,
+.font-archivo,
 .font-serif-editorial {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: var(--font-display) !important;
+}
+
+.font-body,
+.font-space,
+.font-dm {
+  font-family: var(--font-body) !important;
 }
 
 /* Retro Neo-Brutalist & Editorial ticket shadows */
