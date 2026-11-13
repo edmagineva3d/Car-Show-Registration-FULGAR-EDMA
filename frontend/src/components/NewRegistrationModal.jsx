@@ -19,6 +19,16 @@ export function NewRegistrationModal({ isOpen, onClose, onSuccess }) {
   const [generalError, setGeneralError] = useState(null)
   const [successMessage, setSuccessMessage] = useState(null)
 
+  React.useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && !loading) {
+        onClose()
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [onClose, loading])
+
   if (!isOpen) return null
 
   const feeMap = {
@@ -81,13 +91,21 @@ export function NewRegistrationModal({ isOpen, onClose, onSuccess }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-fadeIn">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-fadeIn"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="new-registration-title"
+      onClick={(e) => {
+        if (e.target === e.currentTarget && !loading) onClose()
+      }}
+    >
       <div className="relative w-full max-w-xl bg-[#FAF6EE] border-2 border-[#1C1C1E] rounded-3xl retro-shadow-lg overflow-hidden animate-scaleUp">
         {/* Header */}
         <div className="bg-[#1C1C1E] text-white px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#FFB7CF]" />
-            <h3 className="font-space font-bold text-xs uppercase tracking-wider text-[#FFF3B0]">
+            <h3 id="new-registration-title" className="font-space font-bold text-xs uppercase tracking-wider text-[#FFF3B0]">
               Register New Car Show Participant
             </h3>
           </div>

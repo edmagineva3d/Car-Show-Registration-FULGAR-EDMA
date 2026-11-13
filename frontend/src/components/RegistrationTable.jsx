@@ -35,6 +35,11 @@ export function RegistrationTable({
 
   return (
     <div className="bg-[#FAF6EE] border-2 border-[#1C1C1E] rounded-2xl retro-shadow overflow-hidden">
+      {/* Mobile scroll hint */}
+      <div className="sm:hidden px-4 py-2 bg-[#FFF8D6] border-b border-[#1C1C1E]/20 text-[11px] font-space text-[#5E6368] flex items-center justify-between">
+        <span>← Swipe horizontally to view full table →</span>
+        <span className="font-bold text-[#1C1C1E]">{registrations.length} items</span>
+      </div>
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse min-w-[900px]">
           <thead>

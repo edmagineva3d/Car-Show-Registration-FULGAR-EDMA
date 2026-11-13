@@ -31,18 +31,36 @@ export function RegistrationDetailsModal({ registrationId, initialData, onClose 
     }
   }, [registrationId, initialData])
 
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose()
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [onClose])
+
   if (!registrationId) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-fadeIn">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-fadeIn"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose()
+      }}
+    >
       <div className="relative w-full max-w-lg bg-[#FAF6EE] border-2 border-[#1C1C1E] rounded-3xl retro-shadow-lg overflow-hidden animate-scaleUp">
         {/* Modal Header */}
         <div className="bg-[#1C1C1E] text-white px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#FFB7CF]" />
-            <span className="font-space font-bold text-xs uppercase tracking-wider text-[#FFF3B0]">
+            <h3 id="modal-title" className="font-space font-bold text-xs uppercase tracking-wider text-[#FFF3B0]">
               Official Entry Pass
-            </span>
+            </h3>
           </div>
           <button
             type="button"
