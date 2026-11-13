@@ -1,0 +1,24 @@
+# Build results
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+dist/
+build/
+node_modules/
+
+# Visual Studio / VS Code
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vscode/
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# SQLite WAL and shared memory temporary files
+*.db-shm
+*.db-wal
