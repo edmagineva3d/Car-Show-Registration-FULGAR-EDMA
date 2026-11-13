@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import KpiCards from './components/KpiCards'
 import RegistrationTable from './components/RegistrationTable'
 import RegistrationFilters from './components/RegistrationFilters'
+import Pagination from './components/Pagination'
 import { useDebounce } from './hooks/useDebounce'
 import { getSummary, getRegistrations } from './api/sample-data'
 
@@ -17,10 +18,11 @@ function App() {
   const [typeFilter, setTypeFilter] = useState('All')
   const [statusFilter, setStatusFilter] = useState('All')
 
-  // Pagination State (kept at page 1 for now)
+  // Pagination State
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
   const [totalCount, setTotalCount] = useState(0)
+  const [totalPages, setTotalPages] = useState(1)
 
   // Debounced search term (~400ms)
   const debouncedSearch = useDebounce(searchTerm, 400)
@@ -41,7 +43,7 @@ function App() {
     fetchKpi()
   }, [])
 
-  // Fetch Registrations whenever debouncedSearch, typeFilter, statusFilter, page, or pageSize change
+  // Fetch Registrations
   useEffect(() => {
     async function fetchRegs() {
       try {
@@ -55,6 +57,7 @@ function App() {
         })
         setRegistrations(res.items)
         setTotalCount(res.totalCount)
+        setTotalPages(res.totalPages)
       } catch (err) {
         console.error('Failed to load registrations:', err)
       } finally {
@@ -64,7 +67,7 @@ function App() {
     fetchRegs()
   }, [debouncedSearch, typeFilter, statusFilter, page, pageSize])
 
-  // Reset to page 1 when any filter changes
+  // Filter change handlers (reset page to 1)
   const handleSearchChange = (val) => {
     setSearchTerm(val)
     setPage(1)
@@ -84,6 +87,17 @@ function App() {
     setSearchTerm('')
     setTypeFilter('All')
     setStatusFilter('All')
+    setPage(1)
+  }
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setPage(newPage)
+    }
+  }
+
+  const handlePageSizeChange = (newSize) => {
+    setPageSize(newSize)
     setPage(1)
   }
 
@@ -118,17 +132,19 @@ function App() {
         />
       </section>
 
-      {/* Registrations Table */}
-      <section className="space-y-3">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-archivo text-[#1C1C1E]">
-            Event Registrations
-          </h2>
-          <span className="font-space text-xs text-[#5E6368]">
-            Showing {registrations.length} of {totalCount} matching entries
-          </span>
-        </div>
+      {/* Registrations Table & Pagination */}
+      <section className="space-y-4">
         <RegistrationTable registrations={registrations} />
+
+        <Pagination
+          page={page}
+          pageSize={pageSize}
+          totalCount={totalCount}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+          onPageSizeChange={handlePageSizeChange}
+          loading={loadingRegistrations}
+        />
       </section>
     </div>
   )
