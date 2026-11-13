@@ -12,7 +12,7 @@ This web dashboard is built with **React.js**, **Vite**, **Tailwind CSS**, and *
 - **Bundler & Build Tool:** Vite 8
 - **Styling:** Tailwind CSS v4 & Custom CSS3 animations
 - **Icons:** Lucide React
-- **Typography:** Archivo Black, Space Grotesk, DM Sans, Playfair Display (Google Fonts)
+- **Typography:** Belcons (`Belcons.woff` for headings & KPI metrics) and Inter (`Inter.woff2` for body & interface text)
 - **Architecture:** Component-driven, Custom React Hooks (`useDebounce`), Clean REST API Client
 
 ---

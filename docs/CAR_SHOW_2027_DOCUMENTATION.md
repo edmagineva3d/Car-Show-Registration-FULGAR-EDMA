@@ -49,7 +49,7 @@ The **Car Show Registration System** was developed for AutoVista Events to manag
 ### Visual Identity Alignment (Reference Poster Translation)
 Rather than building an ordinary corporate template, the dashboard faithfully adapts the editorial aesthetic of the primary reference image:
 - **Pastel Color Harmony:** Soft pastel aqua/mint (`#C7E7E3`), warm cream paper surfaces (`#FAF6EE`), pastel pink highlights (`#FFB7CF`), pale yellow stickers (`#FFF3B0`), and deep charcoal typography (`#1C1C1E`).
-- **Typography:** Heavy retro headlines using Google Fonts **Archivo Black**, modern mono labels with **Space Grotesk**, clean body descriptions with **DM Sans**, and elegant accents using **Playfair Display**.
+- **Typography:** Display headlines and KPI metrics using **Belcons** (`Belcons.woff`), paired with **Inter** (`Inter.woff2` and Google Fonts CDN) for body text, interactive controls, inputs, badges, and registration tables.
 - **Tactile Details:** Circular ticket notches, perforated dotted divider lines, solid retro hard drop shadows (`4px 4px 0px #1C1C1E`), tilted sticker labels (`-rotate-3`, `rotate-2`), multi-faceted metallic silver star pins, and retro 8-bit pixel cursors.
 
 ---
