@@ -75,13 +75,13 @@ export function HeroSection({ onOpenNewModal }) {
         <div className="hidden sm:block absolute -right-4 bottom-24 w-8 h-8 rounded-full bg-[#C7E7E3] border-2 border-[#1C1C1E] z-20" />
 
         {/* Floating Decorative Metallic Stars */}
-        <div className="absolute top-4 right-1/4 sm:right-1/3">
+        <div className="absolute top-4 right-1/4 sm:right-1/3 animate-float-slow">
           <MetallicStar className="w-7 h-7" rotate={12} />
         </div>
-        <div className="absolute top-12 left-6">
+        <div className="absolute top-12 left-6 animate-float-reverse">
           <MetallicStar className="w-5 h-5" rotate={-18} />
         </div>
-        <div className="absolute bottom-28 right-8">
+        <div className="absolute bottom-28 right-8 animate-float-slow">
           <MetallicStar className="w-6 h-6" rotate={25} />
         </div>
 
