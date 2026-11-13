@@ -1,0 +1,285 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   1. FONT REGISTRATION (Belcons & Inter)
+   ========================================================================== */
+
+/* Font 1: Belcons (Prominent headings, hero titles, large section headings, KPI numbers) */
+@font-face {
+  font-family: "Belcons";
+  src: url("/fonts/Belcons.woff") format("woff");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Font 2: Inter (Body text, UI controls, tables, inputs, filters, badges, modals) */
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter.woff2") format("woff2"),
+       url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2JL7SUc.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter.woff2") format("woff2"),
+       url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2JL7SUc.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter.woff2") format("woff2"),
+       url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2JL7SUc.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter.woff2") format("woff2"),
+       url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2JL7SUc.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter.woff2") format("woff2"),
+       url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2JL7SUc.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter.woff2") format("woff2"),
+       url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2JL7SUc.woff2") format("woff2");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ==========================================================================
+   2. TYPOGRAPHY SYSTEM & ROOT TOKENS
+   ========================================================================== */
+
+@layer base {
+  :root {
+    --font-display: "Belcons", sans-serif;
+    --font-body: "Inter", sans-serif;
+
+    --bg-aqua: #C7E7E3;
+    --bg-cream: #FAF6EE;
+    --bg-cream-light: #FFFDF9;
+    --pink-accent: #FFB7CF;
+    --pink-dark: #FF94B8;
+    --yellow-accent: #FFF3B0;
+    --yellow-dark: #FFE680;
+    --text-charcoal: #1C1C1E;
+    --text-muted: #5E6368;
+    --border-dark: #1C1C1E;
+  }
+
+  body {
+    background-color: var(--bg-aqua);
+    color: var(--text-charcoal);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    background-image: 
+      linear-gradient(to right, rgba(28, 28, 30, 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(28, 28, 30, 0.045) 1px, transparent 1px);
+    background-size: 24px 24px;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Headings use Belcons */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+
+  /* Form controls, buttons, tables, inputs inherit Inter */
+  button, input, select, textarea, table, th, td {
+    font-family: var(--font-body);
+  }
+}
+
+/* Typography Utility Classes: Headings (Belcons) and General Interface (Inter) */
+.font-display,
+.font-archivo,
+.font-serif-editorial {
+  font-family: var(--font-display) !important;
+}
+
+.font-body,
+.font-space,
+.font-dm,
+.font-mono {
+  font-family: var(--font-body) !important;
+}
+
+/* Retro Neo-Brutalist & Editorial ticket shadows */
+.retro-shadow-xs {
+  box-shadow: 1.5px 1.5px 0px #1C1C1E;
+}
+
+.retro-shadow-sm {
+  box-shadow: 2px 2px 0px #1C1C1E;
+}
+
+.retro-shadow {
+  box-shadow: 4px 4px 0px #1C1C1E;
+}
+
+.retro-shadow-md {
+  box-shadow: 6px 6px 0px #1C1C1E;
+}
+
+.retro-shadow-lg {
+  box-shadow: 8px 8px 0px #1C1C1E;
+}
+
+.retro-shadow-pink {
+  box-shadow: 4px 4px 0px #FF94B8;
+}
+
+.retro-shadow-yellow {
+  box-shadow: 4px 4px 0px #FFE680;
+}
+
+/* Perforated dotted divider */
+.perforated-line {
+  background-image: linear-gradient(to right, #1C1C1E 40%, rgba(255, 255, 255, 0) 0%);
+  background-position: bottom;
+  background-size: 10px 2px;
+  background-repeat: repeat-x;
+}
+
+/* Interactive Animations */
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(1.5deg);
+  }
+}
+
+@keyframes floatReverse {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(6px) rotate(-1.5deg);
+  }
+}
+
+@keyframes pulseSubtle {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-float-slow {
+  animation: floatSlow 5s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: floatReverse 6s ease-in-out infinite;
+}
+
+.animate-pulse-subtle {
+  animation: pulseSubtle 3s ease-in-out infinite;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-scaleUp {
+  animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Skeleton loader */
+.skeleton-box {
+  background: linear-gradient(90deg, #FAF6EE 25%, #F0EAE1 50%, #FAF6EE 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #E8F4F1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #B2D5D0;
+  border: 1px solid #1C1C1E;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #FFB7CF;
+}
+
+/* Accessibility: Respect Reduced Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
