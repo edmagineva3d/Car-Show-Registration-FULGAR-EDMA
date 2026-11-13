@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import KpiCards from './components/KpiCards'
 import RegistrationTable from './components/RegistrationTable'
 import RegistrationFilters from './components/RegistrationFilters'
 import Pagination from './components/Pagination'
+import LoadingState from './components/LoadingState'
+import EmptyState from './components/EmptyState'
+import ErrorState from './components/ErrorState'
 import { useDebounce } from './hooks/useDebounce'
 import { getSummary, getRegistrations } from './api/sample-data'
 
@@ -12,6 +15,7 @@ function App() {
 
   const [registrations, setRegistrations] = useState([])
   const [loadingRegistrations, setLoadingRegistrations] = useState(true)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   // Filters State
   const [searchTerm, setSearchTerm] = useState('')
@@ -28,44 +32,48 @@ function App() {
   const debouncedSearch = useDebounce(searchTerm, 400)
 
   // Fetch KPI Summary
-  useEffect(() => {
-    async function fetchKpi() {
-      try {
-        setLoadingSummary(true)
-        const data = await getSummary()
-        setSummary(data)
-      } catch (err) {
-        console.error('Failed to load KPI summary:', err)
-      } finally {
-        setLoadingSummary(false)
-      }
+  const fetchKpi = useCallback(async () => {
+    try {
+      setLoadingSummary(true)
+      const data = await getSummary()
+      setSummary(data)
+    } catch (err) {
+      console.error('Failed to load KPI summary:', err)
+    } finally {
+      setLoadingSummary(false)
     }
-    fetchKpi()
   }, [])
 
   // Fetch Registrations
-  useEffect(() => {
-    async function fetchRegs() {
-      try {
-        setLoadingRegistrations(true)
-        const res = await getRegistrations({
-          participantName: debouncedSearch,
-          type: typeFilter === 'All' ? '' : typeFilter,
-          status: statusFilter === 'All' ? '' : statusFilter,
-          page,
-          pageSize
-        })
-        setRegistrations(res.items)
-        setTotalCount(res.totalCount)
-        setTotalPages(res.totalPages)
-      } catch (err) {
-        console.error('Failed to load registrations:', err)
-      } finally {
-        setLoadingRegistrations(false)
-      }
+  const fetchRegs = useCallback(async () => {
+    try {
+      setLoadingRegistrations(true)
+      setErrorMessage(null)
+      const res = await getRegistrations({
+        participantName: debouncedSearch,
+        type: typeFilter === 'All' ? '' : typeFilter,
+        status: statusFilter === 'All' ? '' : statusFilter,
+        page,
+        pageSize
+      })
+      setRegistrations(res.items)
+      setTotalCount(res.totalCount)
+      setTotalPages(res.totalPages)
+    } catch (err) {
+      console.error('Failed to load registrations:', err)
+      setErrorMessage('Cannot reach the API. Please make sure the service is accessible.')
+    } finally {
+      setLoadingRegistrations(false)
     }
-    fetchRegs()
   }, [debouncedSearch, typeFilter, statusFilter, page, pageSize])
+
+  useEffect(() => {
+    fetchKpi()
+  }, [fetchKpi])
+
+  useEffect(() => {
+    fetchRegs()
+  }, [fetchRegs])
 
   // Filter change handlers (reset page to 1)
   const handleSearchChange = (val) => {
@@ -101,6 +109,11 @@ function App() {
     setPage(1)
   }
 
+  const handleRetry = () => {
+    fetchKpi()
+    fetchRegs()
+  }
+
   return (
     <div className="min-h-screen p-4 sm:p-8 max-w-7xl mx-auto space-y-6">
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b-2 border-[#1C1C1E]">
@@ -132,19 +145,29 @@ function App() {
         />
       </section>
 
-      {/* Registrations Table & Pagination */}
+      {/* Main Content Area: Loading, Error, Empty, or Table */}
       <section className="space-y-4">
-        <RegistrationTable registrations={registrations} />
+        {errorMessage ? (
+          <ErrorState message={errorMessage} onRetry={handleRetry} />
+        ) : loadingRegistrations ? (
+          <LoadingState message="Loading registrations..." />
+        ) : registrations.length === 0 ? (
+          <EmptyState onClearFilters={handleClearFilters} />
+        ) : (
+          <>
+            <RegistrationTable registrations={registrations} />
 
-        <Pagination
-          page={page}
-          pageSize={pageSize}
-          totalCount={totalCount}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-          onPageSizeChange={handlePageSizeChange}
-          loading={loadingRegistrations}
-        />
+            <Pagination
+              page={page}
+              pageSize={pageSize}
+              totalCount={totalCount}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+              onPageSizeChange={handlePageSizeChange}
+              loading={loadingRegistrations}
+            />
+          </>
+        )}
       </section>
     </div>
   )
